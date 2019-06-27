@@ -1,0 +1,105 @@
+buildscript {
+    ext {
+        junitVersion = '5.3.1'
+        lombokVersion = '1.18.8'
+        mockitoVersion = '2.23.4'
+		// cucumberVersion = '1.2.5'
+		cucumberVersion = '4.3.1'
+        springBootVersion = '2.1.6.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: "$springBootVersion"
+    }
+}
+/*
+plugins {
+	id 'org.springframework.boot' version '2.1.6.RELEASE'
+	id 'java'
+}
+*/
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.preservedmoose'
+version = "${project.ext.properties.appVersion ?: "0.0.0"}"
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.apache.commons:commons-lang3:3.8.1'
+
+	implementation 'org.springframework.boot:spring-boot-starter-groovy-templates'
+
+	compileOnly "org.projectlombok:lombok:${lombokVersion}"
+
+	annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // added for JUnit 5
+    testCompileOnly "org.mockito:mockito-core:${mockitoVersion}"
+    testCompileOnly "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testCompileOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+    testCompileOnly "org.junit.jupiter:junit-jupiter-params:${junitVersion}"
+    testCompileOnly "org.mockito:mockito-junit-jupiter:${mockitoVersion}"
+    testCompileOnly "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+
+    testRuntimeOnly "org.mockito:mockito-core:${mockitoVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-params:${junitVersion}"
+    testRuntimeOnly "org.mockito:mockito-junit-jupiter:${mockitoVersion}"
+
+	// added for Cucumber
+	implementation "io.cucumber:cucumber-java:${cucumberVersion}"
+	implementation "io.cucumber:cucumber-junit:${cucumberVersion}"
+	testImplementation "io.cucumber:cucumber-java:${cucumberVersion}"
+	testImplementation "io.cucumber:cucumber-junit:${cucumberVersion}"
+    // testCompile "info.cukes:cucumber-java:${cucumberVersion}"
+    // testCompile "info.cukes:cucumber-junit:${cucumberVersion}"
+    // testCompile "info.cukes:cucumber-spring:${cucumberVersion}"
+    // testCompile "net.masterthought:cucumber-reporting:3.14.0"
+}
+/*
+springBoot {
+    buildInfo {
+        additionalProperties = [
+                "version": version
+        ]
+    }
+}
+*/
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+    exclude '**/cucumber/**'
+}
+
+task cucumberTest(type: Test) {
+    exclude '**/*cucumberharness*/**'
+
+    testLogging {
+        showStandardStreams = true
+    }
+}
+
+test.finalizedBy cucumberTest
