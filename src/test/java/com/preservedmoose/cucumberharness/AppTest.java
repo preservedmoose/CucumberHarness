@@ -11,7 +11,7 @@ public class AppTest {
      * Rigorous Test.
      */
     @Test
-    public void testApp() {
+    public void shouldTestThatWeHaveJUnit5Configured() {
 
         Assertions.assertTrue(true);
     }

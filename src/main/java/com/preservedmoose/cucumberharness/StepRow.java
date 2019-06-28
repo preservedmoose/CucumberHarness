@@ -1,15 +1,17 @@
 package com.preservedmoose.cucumberharness;
-
+/*
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
 import lombok.var;
+*/
 import lombok.experimental.ExtensionMethod;
 
 @ExtensionMethod(StepRowAssertionFactory.class)
 public abstract class StepRow<TStepRow extends BaseStepRow> extends BaseStepRow
 {
+/*
     private final String PropertyParseErrors = "ParseErrors"; //nameof(ParseErrors);
     private final String PropertyUsedProperties = "PropertyUsedProperties"; //nameof(UsedProperties);
 
@@ -309,7 +311,7 @@ public abstract class StepRow<TStepRow extends BaseStepRow> extends BaseStepRow
         return entries;
     }
 
-    private Object ParseValue(Type propertyType, String value, String key, Method methodInfo, /*ref*/ String sParseError)
+    private Object ParseValue(Type propertyType, String value, String key, Method methodInfo, String sParseError)
     {
         Object result;
 
@@ -363,6 +365,6 @@ public abstract class StepRow<TStepRow extends BaseStepRow> extends BaseStepRow
         var sParseError = String.Format(Resources.StepRow_ValidationFieldNotSet, typeof(TValue), sPropertyName);
         ParseErrors.Add(sParseError);
     }
-
+*/
     // ----------------------------------------------------------------------------------------
 }

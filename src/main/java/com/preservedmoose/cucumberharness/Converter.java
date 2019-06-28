@@ -30,7 +30,8 @@ public class Converter implements IConverter
     public <TValue>TValue ToValue(String fromValue)
     //where TValue : ValueType
     {
-        var type = typeof(TValue);
+        /*
+        var type = TValue.class;
         dynamic toValue = default(TValue);
 
         var sValue = ToCleanString(fromValue);
@@ -43,43 +44,43 @@ public class Converter implements IConverter
         if (type instanceof Boolean)
         {
             Boolean value;
-            isValid = _parser.TryParseBoolean(sValue, /*out*/ value);
+            isValid = _parser.TryParseBoolean(sValue, value);
             if (isValid) toValue = value;
         }
         else if (type instanceof Short)
         {
             Short value;
-            isValid = _parser.TryParseShort(sValue, /*out*/ value);
+            isValid = _parser.TryParseShort(sValue, value);
             if (isValid) toValue = value;
         }
         else if (type instanceof Integer)
         {
             Integer value;
-            isValid = _parser.TryParseInteger(sValue, /*out*/ value);
+            isValid = _parser.TryParseInteger(sValue, value);
             if (isValid) toValue = value;
         }
         else if (type instanceof Long)
         {
             Long value;
-            isValid = _parser.TryParseLong(sValue, /*out*/ value);
+            isValid = _parser.TryParseLong(sValue, value);
             if (isValid) toValue = value;
         }
         else if (type instanceof LocalDate)
         {
             LocalDate value;
-            isValid = _parser.TryParseDate(sValue, /*out*/ value);
+            isValid = _parser.TryParseDate(sValue, value);
             if (isValid) toValue = value;
         }
         else if (type instanceof LocalDateTime)
         {
             LocalDateTime value;
-            isValid = _parser.TryParseDateTime(sValue, /*out*/ value);
+            isValid = _parser.TryParseDateTime(sValue, value);
             if (isValid) toValue = value;
         }
         else    // just parse it normally
         {
             TValue value;
-            isValid = _parser.TryParseValue(sValue, /*out*/ value);
+            isValid = _parser.TryParseValue(sValue, value);
             if (isValid) toValue = value;
         }
 
@@ -88,9 +89,11 @@ public class Converter implements IConverter
             throw new IllegalArgumentException(String.format(Resources.Get("Converter_InvalidValue"), sValue, type));
         }
         return toValue;
+        */
+        return (TValue) new Object();
     }
 
-    public <TEnum>TEnum ToEnum(String fromValue)
+    public <TEnum extends Enum>TEnum ToEnum(String fromValue)
         //where TEnum : struct
     {
         //var type = typeof(TEnum);
@@ -99,9 +102,9 @@ public class Converter implements IConverter
         var sValue = ToCleanString(fromValue);
         if (sValue == StringUtils.EMPTY) return null;
         //if (sValue == StringUtils.EMPTY) return toEnum;
-
+/*
         var isValid1 = EnumUtils.isValidEnum(TEnum.class, sValue);
-        var isValid = Enum.TryParse(sValue, true, /*out*/ toEnum);
+        var isValid = Enum.TryParse(sValue, true, toEnum);
 
         if (!isValid)
         {
@@ -121,10 +124,13 @@ public class Converter implements IConverter
             throw new IllegalArgumentException(String.format(Resources.Get("Converter_InvalidValue"), sValue, type));
         }
         return toEnum;
+*/
+        return (TEnum) new Object();
     }
 
     public <TObject extends IConvertibleFromString<TObject>>TObject ToObject(String fromValue)
     {
+        /*
         var type = typeof(TObject);
         var toObject = new TObject();
 
@@ -138,10 +144,13 @@ public class Converter implements IConverter
             throw new IllegalArgumentException(String.format(Resources.Get("Converter_InvalidValue"), sValue, type));
         }
         return toObject;
+        */
+        return (TObject) new Object();
     }
 
     public <TObject extends IConvertibleStaticFromString<TObject>>TObject ToObjectStatic(String fromValue)
     {
+        /*
         // for calls that return static objects
         // we must create an instance on which to call the method
         // and then return the static object, not the one created
@@ -152,31 +161,34 @@ public class Converter implements IConverter
         if (sValue == StringUtils.EMPTY) return toObject;
 
         var temporary = new TObject();
-        var isValid = temporary.TryParse(sValue, /*out*/ toObject);
+        var isValid = temporary.TryParse(sValue, toObject);
 
         if (!isValid)
         {
             throw new IllegalArgumentException(String.format(Resources.Get("Converter_InvalidValue"), sValue, type));
         }
         return toObject;
+        */
+        return (TObject) new Object();
     }
 
     // ----------------------------------------------------------------------------------------
 
     public LocalDate ToDate(String fromValue, String format)
     {
-        var type = typeof(LocalDate);
-        var toDate = default(LocalDate);
+        //var type = typeof(LocalDate);
+        var toDate = LocalDate.MIN;
 
         var sValue = ToCleanString(fromValue);
         if (sValue == StringUtils.EMPTY) return toDate;
-
-        var isValid = LocalDate.TryParseExact(sValue, format, CultureInfo.InvariantCulture, DateTimeStyles.None, /*out*/ toDate);
+/*
+        var isValid = LocalDate.TryParseExact(sValue, format, CultureInfo.InvariantCulture, DateTimeStyles.None, toDate);
 
         if (!isValid)
         {
             throw new IllegalArgumentException(String.format(Resources.Get("Converter_InvalidValue"), sValue, type));
         }
+*/
         return toDate;
     }
 
@@ -184,18 +196,19 @@ public class Converter implements IConverter
 
     public LocalDateTime ToDateTime(String fromValue, String format)
     {
-        var type = typeof(LocalDateTime);
-        var toDateTime = default(LocalDateTime);
+        //var type = typeof(LocalDateTime);
+        var toDateTime = LocalDateTime.MIN;
 
         var sValue = ToCleanString(fromValue);
         if (sValue == StringUtils.EMPTY) return toDateTime;
-
-        var isValid = LocalDateTime.TryParseExact(sValue, format, CultureInfo.InvariantCulture, DateTimeStyles.None, /*out*/ toDateTime);
+/*
+        var isValid = LocalDateTime.TryParseExact(sValue, format, CultureInfo.InvariantCulture, DateTimeStyles.None, toDateTime);
 
         if (!isValid)
         {
             throw new IllegalArgumentException(String.format(Resources.Get("Converter_InvalidValue"), sValue, type));
         }
+*/
         return toDateTime;
     }
 
@@ -210,15 +223,16 @@ public class Converter implements IConverter
         if (sValues == StringUtils.EMPTY) return toValues;
 
         var valuesArray = sValues.split(Constants.CommaSeparator);
-
+/*
         for (var value : valuesArray)
         {
             toValues.Add(ToValue<TValue>(value));
         }
+*/
         return toValues;
     }
 
-    public <TEnum>List<TEnum> ToEnums(String fromValues)
+    public <TEnum extends Enum>List<TEnum> ToEnums(String fromValues)
         //where TEnum : struct
     {
         var toEnums = new ArrayList<TEnum>();
@@ -227,11 +241,12 @@ public class Converter implements IConverter
         if (sValues == StringUtils.EMPTY) return toEnums;
 
         var valuesArray = sValues.split(Constants.CommaSeparator);
-
+/*
         for (var value : valuesArray)
         {
             toEnums.Add(ToEnum<TEnum>(value));
         }
+*/
         return toEnums;
     }
 
@@ -243,11 +258,12 @@ public class Converter implements IConverter
         if (sValues == StringUtils.EMPTY) return toObjects;
 
         var valuesArray = sValues.split(Constants.CommaSeparator);
-
+/*
         for (var value : valuesArray)
         {
             toObjects.Add(ToObject<TObject>(value));
         }
+*/
         return toObjects;
     }
 
@@ -259,11 +275,12 @@ public class Converter implements IConverter
         if (sValues == StringUtils.EMPTY) return toObjects;
 
         var valuesArray = sValues.split(Constants.CommaSeparator);
-
+/*
         for (var value : valuesArray)
         {
             toObjects.Add(ToObjectStatic<TObject>(value));
         }
+*/
         return toObjects;
     }
 

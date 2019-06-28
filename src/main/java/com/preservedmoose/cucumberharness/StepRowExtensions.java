@@ -1,6 +1,7 @@
 package com.preservedmoose.cucumberharness;
 
 import java.util.Collection;
+import java.util.List;
 
 import com.preservedmoose.cucumberharness.Application.Resources;
 
@@ -24,7 +25,7 @@ public class StepRowExtensions
     /// </summary>
     /// <typeparam name="TStepRow">the derived class</typeparam>
     /// <param name="rows"></param>
-    public static <TStepRow extends BaseStepRow>void Validate(/*this*/ Collection<TStepRow> rows)
+    public static <TStepRow extends BaseStepRow>void Validate(Collection<TStepRow> rows)
     {
         // perform validation on all rows
         var hasParseErrors = false;
@@ -40,13 +41,13 @@ public class StepRowExtensions
         var messageBuilder = new StringBuilder();
 
         messageBuilder.append(Resources.Get("StepRowExtensions_TableParsingErrorMessage") + StringUtils.CR + StringUtils.LF);
-        messageBuilder.append(typeof(TStepRow).ToString() + StringUtils.CR + StringUtils.LF);
+        //messageBuilder.append(typeof(TStepRow).ToString() + StringUtils.CR + StringUtils.LF);
         messageBuilder.append(StringUtils.CR + StringUtils.LF);
 
-        for (var parseError : rows.stream().flatMap(row -> row.ParseErrors).ToList(Collections.))
-        {
-            messageBuilder.append(parseError + StringUtils.CR + StringUtils.LF);
-        }
+        // for (var parseError : rows.stream().flatMap(row -> row.ParseErrors).ToList(Collections.))
+        // {
+        //     messageBuilder.append(parseError + StringUtils.CR + StringUtils.LF);
+        // }
         var message = messageBuilder.toString();
 
         // throw an exception and stop
@@ -108,20 +109,20 @@ public class StepRowExtensions
         // check the sizes of the two collections
         switch (comparisonType)
         {
-            case ComparisonType.Equal:
-            case ComparisonType.EqualOrdered:
+            case Equal:
+            case EqualOrdered:
                 {
-                    isDifferent = rowsExpected.Count != rowsActual.Count;
+                    isDifferent = rowsExpected.size() != rowsActual.size();
                     break;
                 }
-            case ComparisonType.Subset:
+            case Subset:
                 {
-                    isDifferent = rowsExpected.Count <= rowsActual.Count;
+                    isDifferent = rowsExpected.size() <= rowsActual.size();
                     break;
                 }
-            case ComparisonType.Superset:
+            case Superset:
                 {
-                    isDifferent = rowsExpected.Count >= rowsActual.Count;
+                    isDifferent = rowsExpected.size() >= rowsActual.size();
                     break;
                 }
             default:
@@ -143,7 +144,7 @@ public class StepRowExtensions
                     // determine if the expected list has the elements in the actual
                     for (var actual : rowsActual)
                     {
-                        if (rowsExpected.Contains(actual)) continue;
+                        if (rowsExpected.contains(actual)) continue;
                         actual.IsDifferent = true;
                         isDifferent = true;
                     }
@@ -155,7 +156,7 @@ public class StepRowExtensions
                     // determine if the actual list has the elements in the expected
                     for (var expected : rowsExpected)
                     {
-                        if (rowsActual.Contains(expected)) continue;
+                        if (rowsActual.contains(expected)) continue;
                         expected.IsDifferent = true;
                         isDifferent = true;
                     }
@@ -163,27 +164,27 @@ public class StepRowExtensions
             }
             else if (comparisonType == ComparisonType.EqualOrdered)
             {
-                var listActual = rowsActual.ToList();
-                var listExpected = rowsExpected.ToList();
+                var listActual = (List<TStepRow>) rowsActual;
+                var listExpected = (List<TStepRow>) rowsExpected;
 
                 // determine if the expected list has the elements in the actual
-                for (var index = 0; index < listActual.Count; ++index)
+                for (var index = 0; index < listActual.size(); ++index)
                 {
-                    var actual = listActual[index];
-                    var expected = listExpected[index];
+                    var actual = listActual.get(index);
+                    var expected = listExpected.get(index);
 
-                    if (expected.Equals(actual)) continue;
+                    if (expected.equals(actual)) continue;
                     actual.IsDifferent = true;
                     isDifferent = true;
                 }
 
                 // determine if the actual list has the elements in the expected
-                for (var index = 0; index < listExpected.Count; ++index)
+                for (var index = 0; index < listExpected.size(); ++index)
                 {
-                    var actual = listActual[index];
-                    var expected = listExpected[index];
+                    var actual = listActual.get(index);
+                    var expected = listExpected.get(index);
 
-                    if (actual.Equals(expected)) continue;
+                    if (actual.equals(expected)) continue;
                     expected.IsDifferent = true;
                     isDifferent = true;
                 }
@@ -199,8 +200,9 @@ public class StepRowExtensions
 
     private static <TStepRow extends BaseStepRow>void DisplayErrors(Collection<TStepRow> rowsExpected, Collection<TStepRow> rowsActual, boolean isContinueOnError)
     {
+        /*
         // we need to display the errors to the user on the console window
-        var usedColumns = rowsExpected.SelectMany(r => r.UsedProperties).Distinct().ToList();
+        var usedColumns = rowsExpected.SelectMany(r -> r.UsedProperties).Distinct().ToList();
 
         var displayActual = rowsActual.ToDataTable(usedColumns).ToDisplayString();
         var displayExpected = rowsExpected.ToDataTable(usedColumns).ToDisplayString();
@@ -230,8 +232,9 @@ public class StepRowExtensions
 
         // just display the error and continue
         Console.WriteLine(message);
+        */
     }
-
+/*
     /// <summary>
     /// convert to DataTable so that we can return more information
     /// Enums are converted to strings with spacing between the words
@@ -257,7 +260,7 @@ public class StepRowExtensions
 
         for (var propertyInfo : properties)
         {
-            if (usedColumns.Count > 0 && !usedColumns.Contains(propertyInfo.Name)) continue;
+            if (usedColumns.size() > 0 && !usedColumns.Contains(propertyInfo.Name)) continue;
 
             var isCollection = propertyInfo.PropertyType.IsConstructedGenericType &&
                                 typeof(IEnumerable).IsAssignableFrom(propertyInfo.PropertyType);
@@ -277,7 +280,7 @@ public class StepRowExtensions
 
             for (var propertyInfo : properties)
             {
-                if (usedColumns.Count > 0 && !usedColumns.Contains(propertyInfo.Name)) continue;
+                if (usedColumns.size() > 0 && !usedColumns.Contains(propertyInfo.Name)) continue;
 
                 var value = propertyInfo.GetValue(row, null);
                 var isCollection = propertyInfo.PropertyType.IsConstructedGenericType &&
@@ -339,4 +342,5 @@ public class StepRowExtensions
         }
         return data;
     }
+    */
 }

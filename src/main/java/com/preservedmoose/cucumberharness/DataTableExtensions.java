@@ -1,15 +1,17 @@
 package com.preservedmoose.cucumberharness;
-
+/*
 import java.util.HashMap;
+import java.util.List;
 
 import io.cucumber.datatable.DataTable;
 import lombok.var;
-
+*/
 /// <summary>
 /// Helper extension methods for handling DataTable modifications
 /// </summary>
 public class DataTableExtensions
 {
+/*
     private final String Separator = " | ";
 
     /// <summary>
@@ -17,10 +19,12 @@ public class DataTableExtensions
     /// </summary>
     /// <param name="dataTable"></param>
     /// <returns></returns>
-    public static String ToDisplayString(/*this*/ DataTable dataTable)
+    public static String ToDisplayString(DataTable dataTable)
     {
         var stringBuilder = new StringBuilder();
         var dictionary = new HashMap<String, Integer>();
+
+        //List<Converter> l = dataTable.asList(Converter.class);
 
         // set the structure to hold the columns and the initial widths of these
         for (DataColumn column : dataTable.Columns)
@@ -83,4 +87,5 @@ public class DataTableExtensions
 
         return stringBuilder.ToString();
     }
+*/
 }

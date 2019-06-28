@@ -1,6 +1,6 @@
 package com.preservedmoose.cucumberharness;
 
-import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -18,7 +18,6 @@ public interface IParser
     /// <param name="enumType"></param>
     /// <returns></returns>
     <TEnum>String ReadEnumDescription(TEnum enumType);
-    //    where TEnum : struct;
 
     // ----------------------------------------------------------------------------------------
 
@@ -29,7 +28,7 @@ public interface IParser
     /// <param name="fromValue"></param>
     /// <param name="parseError"></param>
     /// <returns></returns>
-    boolean ParseBoolean(String column, String fromValue, /*ref*/ String parseError);
+    Boolean ParseBoolean(String column, String fromValue, String parseError);
 
     /// <summary>
     /// helper to allow comma separated values
@@ -38,7 +37,7 @@ public interface IParser
     /// <param name="fromValue"></param>
     /// <param name="parseError"></param>
     /// <returns></returns>
-    short ParseShort(String column, String fromValue, /*ref*/ String parseError);
+    Short ParseShort(String column, String fromValue, String parseError);
 
     /// <summary>
     /// helper to allow comma separated values
@@ -47,7 +46,7 @@ public interface IParser
     /// <param name="fromValue"></param>
     /// <param name="parseError"></param>
     /// <returns></returns>
-    int ParseInteger(String column, String fromValue, /*ref*/ String parseError);
+    Integer ParseInteger(String column, String fromValue, String parseError);
 
     /// <summary>
     /// helper to allow comma separated values
@@ -56,7 +55,16 @@ public interface IParser
     /// <param name="fromValue"></param>
     /// <param name="parseError"></param>
     /// <returns></returns>
-    long ParseLong(String column, String fromValue, /*ref*/ String parseError);
+    Long ParseLong(String column, String fromValue, String parseError);
+
+    /// <summary>
+    /// helper to allow comma separated values
+    /// </summary>
+    /// <param name="column"></param>
+    /// <param name="fromValue"></param>
+    /// <param name="parseError"></param>
+    /// <returns></returns>
+    BigDecimal ParseBigDecimal(String column, String fromValue, String parseError);
 
     /// <summary>
     /// helper to handle dates in the passed in value (two formats supported)
@@ -65,7 +73,7 @@ public interface IParser
     /// <param name="fromValue"></param>
     /// <param name="parseError"></param>
     /// <returns></returns>
-    LocalDate ParseDate(String column, String fromValue, /*ref*/ String parseError);
+    LocalDate ParseDate(String column, String fromValue, String parseError);
 
     /// <summary>
     /// helper to handle dates in the passed in value (two formats supported)
@@ -74,17 +82,7 @@ public interface IParser
     /// <param name="fromValue"></param>
     /// <param name="parseError"></param>
     /// <returns></returns>
-    LocalDateTime ParseDateTime(String column, String fromValue, /*ref*/ String parseError);
-
-    /// <summary>
-    /// helper to parse value types (float, double, decimal...)
-    /// </summary>
-    /// <param name="column"></param>
-    /// <param name="fromValue"></param>
-    /// <param name="type"></param>
-    /// <param name="parseError"></param>
-    /// <returns></returns>
-    Object ParseValue(Type type, String column, String fromValue, /*ref*/ String parseError);
+    LocalDateTime ParseDateTime(String column, String fromValue, String parseError);
 
     /// <summary>
     /// helper to parse Enum types
@@ -94,7 +92,7 @@ public interface IParser
     /// <param name="fromValue">what we wish to parse</param>
     /// <param name="parseError">the error String returned if the conversion failed</param>
     /// <returns></returns>
-    <TEnum>TEnum ParseEnum(String column, String fromValue, /*ref*/ String parseError);
+    <TEnum>TEnum ParseEnum(String column, String fromValue, String parseError);
         //where TEnum : struct;
 
     /// <summary>
@@ -104,7 +102,7 @@ public interface IParser
     /// <param name="fromValue"></param>
     /// <param name="parseError"></param>
     /// <returns></returns>
-    <TObject extends IConvertibleFromString<TObject>>TObject ParseObject(String column, String fromValue, /*ref*/ String parseError);
+    <TObject extends IConvertibleFromString<TObject>>TObject ParseObject(String column, String fromValue, String parseError);
         //new();
 
     /// <summary>
@@ -114,7 +112,7 @@ public interface IParser
     /// <param name="fromValue"></param>
     /// <param name="parseError"></param>
     /// <returns></returns>
-    <TObject extends IConvertibleStaticFromString<TObject>>TObject ParseObjectStatic(String column, String fromValue, /*ref*/ String parseError);
+    <TObject extends IConvertibleStaticFromString<TObject>>TObject ParseObjectStatic(String column, String fromValue, String parseError);
         //new();
 
     // ----------------------------------------------------------------------------------------
@@ -125,58 +123,55 @@ public interface IParser
     /// <param name="fromValue">From value.</param>
     /// <param name="toValue">The return value.</param>
     /// <returns></returns>
-    boolean TryParseBoolean(String fromValue, /*out*/ boolean toValue);
+    boolean TryParseBoolean(String fromValue, Boolean toValue);
 
     /// <summary>
-    /// Tries to parse an Int16, allowing for the thousands separator.
+    /// Tries to parse an Short, allowing for the thousands separator.
     /// </summary>
     /// <param name="fromValue">From value.</param>
     /// <param name="toValue">The return value.</param>
     /// <returns></returns>
-    boolean TryParseShort(String fromValue, /*out*/ short toValue);
+    boolean TryParseShort(String fromValue, Short toValue);
 
     /// <summary>
-    /// Tries to parse an Int32, allowing for the thousands separator.
+    /// Tries to parse an Integer, allowing for the thousands separator.
     /// </summary>
     /// <param name="fromValue">From value.</param>
     /// <param name="toValue">The return value.</param>
     /// <returns></returns>
-    boolean TryParseInteger(String fromValue, /*out*/ int toValue);
+    boolean TryParseInteger(String fromValue, Integer toValue);
 
     /// <summary>
-    /// Tries to parse an Int64, allowing for the thousands separator.
+    /// Tries to parse an Long, allowing for the thousands separator.
     /// </summary>
     /// <param name="fromValue">From value.</param>
     /// <param name="toValue">The return value.</param>
     /// <returns></returns>
-    boolean TryParseLong(String fromValue, /*out*/ long toValue);
+    boolean TryParseLong(String fromValue, Long toValue);
 
     /// <summary>
-    /// Tries to parse a DateTime, allowing for three ISO formats from the Constants class.
+    /// Tries to parse a BigDecimal
     /// </summary>
     /// <param name="fromValue">From value.</param>
     /// <param name="toValue">The return value.</param>
     /// <returns></returns>
-    boolean TryParseDate(String fromValue, /*out*/ LocalDate toValue);
+    boolean TryParseBigDecimal(String fromValue, BigDecimal toValue);
 
     /// <summary>
-    /// Tries to parse a DateTime, allowing for three ISO formats from the Constants class.
+    /// Tries to parse a LocalDate, allowing for three ISO formats from the Constants class.
     /// </summary>
     /// <param name="fromValue">From value.</param>
     /// <param name="toValue">The return value.</param>
     /// <returns></returns>
-    boolean TryParseDateTime(String fromValue, /*out*/ LocalDateTime toValue);
+    boolean TryParseDate(String fromValue, LocalDate toValue);
 
     /// <summary>
-    /// Tries to parse for other value types
-    /// uint, float, String... etc
+    /// Tries to parse a LocalDateTime, allowing for three ISO formats from the Constants class.
     /// </summary>
-    /// <typeparam name="TValue">The type of the c.</typeparam>
-    /// <param name="fromValue">The s value.</param>
+    /// <param name="fromValue">From value.</param>
     /// <param name="toValue">The return value.</param>
     /// <returns></returns>
-    <TValue>boolean TryParseValue(String fromValue, /*out*/ TValue toValue);
-        //where TValue : ValueType
+    boolean TryParseDateTime(String fromValue, LocalDateTime toValue);
 
     /// <summary>
     /// Tries the parse enum.
@@ -185,8 +180,7 @@ public interface IParser
     /// <param name="fromValue">From value.</param>
     /// <param name="toValue">To value.</param>
     /// <returns></returns>
-    <TEnum>boolean TryParseEnum(String fromValue, /*out*/ TEnum toValue);
-        //where TEnum : struct;
+    <TEnum>boolean TryParseEnum(String fromValue, TEnum toValue);
 
     // ----------------------------------------------------------------------------------------
 

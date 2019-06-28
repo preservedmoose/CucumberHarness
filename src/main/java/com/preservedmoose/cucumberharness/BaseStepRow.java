@@ -6,19 +6,20 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
+/*
 import com.preservedmoose.cucumberharness.Application.Resources;
 
 import org.apache.commons.lang3.StringUtils;
 
 import lombok.var;
+*/
 import lombok.experimental.ExtensionMethod;
 
 @ExtensionMethod(StepRowAssertionFactory.class)
 public abstract class BaseStepRow
 {
     protected final IParser Parser;
-
+/*
     private final Method _methodInfoEnum;
     private final Method _methodInfoObject;
     private final Method _methodInfoObjectStatic;
@@ -26,7 +27,7 @@ public abstract class BaseStepRow
     private final String ParseEnum = "ParseEnum";//nameof(IParser.ParseEnum);
     private final String ParseObject = "ParseObject";//nameof(IParser.ParseObject);
     private final String ParseObjectStatic = "ParseObjectStatic";//nameof(IParser.ParseObjectStatic);
-
+*/
     protected static final Type[] SimpleTypes =
     {
         boolean.class,
@@ -59,7 +60,7 @@ public abstract class BaseStepRow
 
         ParseErrors = new ArrayList<String>();
         UsedProperties = new ArrayList<String>();
-
+/*
         // we may need to handle Objects using reflection to get the correct type
         var type = Parser.GetType();
 
@@ -70,6 +71,7 @@ public abstract class BaseStepRow
         _methodInfoEnum.Should().NotBeNull(Resources.Get("BaseStepRow_MethodInfo"), ParseEnum);
         _methodInfoObject.Should().NotBeNull(Resources.Get("BaseStepRow_MethodInfo"), ParseObject);
         _methodInfoObjectStatic.Should().NotBeNull(Resources.Get("BaseStepRow_MethodInfo"), ParseObjectStatic);
+*/
     }
 
     // ----------------------------------------------------------------------------------------
@@ -91,7 +93,7 @@ public abstract class BaseStepRow
 
     // ----------------------------------------------------------------------------------------
 
-
+/*
     /// <summary>
     /// ensures that the table does not contains columns that do not map to the class
     /// </summary>
@@ -222,5 +224,5 @@ public abstract class BaseStepRow
         }
         return methodInfo;
     }
-
+*/
 }
